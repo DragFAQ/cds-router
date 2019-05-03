@@ -19,6 +19,8 @@ export * from "./method";
 
 export * from "./parameter";
 
+export * from "./resolvers";
+
 export * from "./response";
 
 export * from "./summary";

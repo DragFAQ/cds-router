@@ -49,3 +49,4 @@ export const get = (path?: string) => method('get', path);
 export const put = (path?: string) => method('put', path);
 export const del = (path?: string) => method('delete', path);
 export const post = (path?: string) => method('post', path);
+export const patch = (path?: string) => method('patch', path);
