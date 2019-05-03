@@ -15,7 +15,8 @@ export enum ENUM_PARAM_IN {
     query,
     body,
     header,
-    path
+    path,
+    formData
 }
 
 export function parameter(name: string, schema?: ISchema | joi.Schema, paramIn?: ENUM_PARAM_IN): MethodDecorator {
@@ -48,7 +49,8 @@ export function parameter(name: string, schema?: ISchema | joi.Schema, paramIn?:
 
         registerMiddleware(target, key, async function fnParameter(ctx, next) {
             let schemas = PARAMETERS.get(target.constructor).get(key);
-            let tempSchema = {params: {}, body: {}, query: {}};
+            let tempSchema = {params: {}, body: {}, query: {}, formData: {}};
+            let body = ctx.request.body;
             for (let [name, schema] of schemas) {
                 switch (schema.in) {
                     case ENUM_PARAM_IN.query:
@@ -59,18 +61,34 @@ export function parameter(name: string, schema?: ISchema | joi.Schema, paramIn?:
                         break;
                     case ENUM_PARAM_IN.body:
                         tempSchema.body = schema.schema;
+                        break;
+                    case ENUM_PARAM_IN.formData:
+                        tempSchema.formData[name] = schema.schema;
+                        if (ctx.request.files && ctx.request.files[name]) {
+                            body = Object.assign(body, {[name]: ctx.request.files[name]});
+                        }
+                        break;
                 }
+            }
+
+            let formData = {};
+            if (ctx.request.is([ "multipart/form-data"])) {
+              formData = body;
+              body = {};
             }
             let {error, value} = joi.validate({
                 params: ctx.params,
-                body: ctx.request.body,
-                query: ctx.request.query
+                body,
+                query: ctx.request.query,
+                formData
             }, tempSchema);
             if (error) {
                 return ctx.throw(400, JSON.stringify({code: 400, message: error.message}));
             }
             ctx.params = value.params;
-            ctx.request.body = value.body;
+            ctx.request.body = ctx.request.is([
+              "multipart/form-data"
+            ]) && value.formData || value.body;
             ctx.request.query = value.query;
             return await next();
         });

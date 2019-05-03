@@ -158,6 +158,12 @@ Parameters:
         doGet(ctx) {
             ctx.body = Date.now();
         }
+        
+        @post('/upload')
+        @parameter('file1', {type: "file"}, ENUM_PARAM_IN.formData)
+        doUpload(ctx) {
+            ctx.body = { fileObj: ctx.body.file1};
+        }
     
         @get('/{userId}')
         @parameter('userId', joi.number().min(2).description('userId'), ENUM_PARAM_IN.path)

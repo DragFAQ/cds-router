@@ -87,8 +87,8 @@ export const DEFAULT_PATH: IPath = {
   summary: "",
   description: "",
   operationId: undefined,
-  consumes: ["application/json"],
-  produces: ["application/json"],
+  consumes: ["application/json", "multipart/form-data", "application/x-www-form-urlencoded"],
+  produces: ["application/json", "multipart/form-data", "application/x-www-form-urlencoded"],
   responses: {"200": {description: "Success"}},
   security: []
 };

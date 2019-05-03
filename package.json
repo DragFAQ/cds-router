@@ -26,19 +26,19 @@
   "author": "DragFAQ",
   "license": "ISC",
   "dependencies": {
-    "@types/joi": "^14.3.1",
+    "@types/joi": "^13.4.0",
     "@types/koa-router": "^7.0.40",
     "@types/lodash": "^4.14.123",
-    "joi": "^14.3.1",
+    "joi": "^13.4.0",
     "joi-to-swagger": "^3.1.0",
     "koa-router": "^7.4.0",
     "koa2-swagger-ui": "^2.13.2",
     "lodash": "^4.17.11"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.14",
-    "jest": "^23.6.0",
-    "ts-jest": "^23.10.5",
+    "@types/jest": "^24.0.12",
+    "jest": "^24.7.1",
+    "ts-jest": "^24.0.2",
     "typescript": "^3.4.1"
   },
   "jest": {
